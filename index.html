@@ -10,10 +10,10 @@ body {
     font-family: 'Segoe UI', sans-serif;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .container {
@@ -24,14 +24,7 @@ body {
     text-align: center;
 }
 
-h1 {
-    color: #ff4d6d;
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-top: 0;
-}
+h1 { color: #ff4d6d; }
 
 .buttons {
     margin-top: 30px;
@@ -47,15 +40,21 @@ button {
     cursor: pointer;
 }
 
-#yes {
-    background: #ff4d6d;
-    color: white;
-}
+#yes { background: #ff4d6d; color: white; }
+#no  { background: #999; color: white; position: absolute; }
 
-#no {
-    background: #999;
+/* Success screen */
+#success {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
     color: white;
-    position: absolute;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 /* Floating hearts */
@@ -64,25 +63,19 @@ button {
     bottom: -20px;
     font-size: 24px;
     animation: floatUp 6s linear forwards;
-    opacity: 0.9;
 }
 
 @keyframes floatUp {
-    from {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-110vh) scale(1.8);
-        opacity: 0;
-    }
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to   { transform: translateY(-110vh) scale(1.8); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="main">
+<!-- Question Card -->
+<div class="container" id="question">
     <h1>Upasna 💖</h1>
     <h2>Will you be my Valentine?</h2>
 
@@ -92,50 +85,40 @@ button {
     </div>
 </div>
 
-<!-- Local background music -->
-<audio id="music" preload="auto">
+<!-- Success Screen -->
+<div id="success">
+    <div>
+        <h1>YAYYYY UPASNA!!! 💖🥰</h1>
+        <h2>You are my Valentine forever 💕</h2>
+        <p>I love you endlessly 🌹</p>
+    </div>
+</div>
+
+<!-- Local music -->
+<audio id="music" preload="auto" loop>
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 function moveNo() {
     const noBtn = document.getElementById("no");
-    const container = document.querySelector(".buttons");
+    const box = document.querySelector(".buttons");
 
-    const maxX = container.clientWidth - noBtn.clientWidth;
-    const maxY = container.clientHeight - noBtn.clientHeight;
-
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+    noBtn.style.left = Math.random() * (box.clientWidth - noBtn.clientWidth) + "px";
+    noBtn.style.top  = Math.random() * (box.clientHeight - noBtn.clientHeight) + "px";
 }
 
 function yesClicked() {
-    document.getElementById("no").style.display = "none";
+    // Hide question, show success
+    document.getElementById("question").style.display = "none";
+    document.getElementById("success").style.display = "flex";
 
+    // Play music (user-initiated → allowed)
     const music = document.getElementById("music");
     music.currentTime = 0;
     music.play();
 
-    document.body.innerHTML = `
-        <div style="
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-            height:100vh;
-            width:100vw;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            text-align:center;
-            font-family:Segoe UI;
-            color:white;
-            overflow:hidden;">
-            <div>
-                <h1>YAYYYY UPASNA!!! 💖🥰</h1>
-                <h2>You are my Valentine forever 💕</h2>
-                <p>I love you endlessly 🌹</p>
-            </div>
-        </div>
-    `;
-
+    // Start hearts
     setInterval(createHeart, 300);
 }
 
