@@ -6,17 +6,31 @@
 
 <style>
 body {
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    font-family: 'Segoe UI', sans-serif;
-    height: 100vh;
     margin: 0;
-    overflow: hidden;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-.card {
+/* Tap overlay */
+#overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.container {
     background: white;
     padding: 40px 50px;
     border-radius: 25px;
@@ -50,9 +64,9 @@ button {
     inset: 0;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
     color: white;
-    text-align: center;
     align-items: center;
     justify-content: center;
+    text-align: center;
     flex-direction: column;
 }
 
@@ -73,8 +87,16 @@ button {
 
 <body>
 
-<!-- Question -->
-<div class="card" id="question">
+<!-- TAP TO START -->
+<div id="overlay" onclick="startMusic()">
+    <div>
+        <h1>💖 Tap Anywhere 💖</h1>
+        <p>I made something special for you…</p>
+    </div>
+</div>
+
+<!-- QUESTION -->
+<div class="container" id="question">
     <h1>Upasna 💖</h1>
     <h2>Will you be my Valentine?</h2>
 
@@ -84,31 +106,25 @@ button {
     </div>
 </div>
 
-<!-- Success -->
+<!-- SUCCESS -->
 <div id="success">
     <h1>YAYYYY UPASNA!!! 💖🥰</h1>
     <h2>You are my Valentine forever 💕</h2>
     <p>I love you endlessly 🌹</p>
-
-    <button onclick="playMusic()" style="
-        margin-top:20px;
-        padding:14px 30px;
-        font-size:18px;
-        border-radius:30px;
-        border:none;
-        background:white;
-        color:#ff4d6d;
-        cursor:pointer;">
-        ▶ Tap to Play Music 🎵
-    </button>
 </div>
 
-<!-- Music -->
+<!-- MUSIC -->
 <audio id="music" loop>
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+function startMusic() {
+    const music = document.getElementById("music");
+    music.play();
+    document.getElementById("overlay").style.display = "none";
+}
+
 function moveNo() {
     const noBtn = document.getElementById("no");
     const box = document.querySelector(".buttons");
@@ -121,12 +137,6 @@ function yesClicked() {
     document.getElementById("question").style.display = "none";
     document.getElementById("success").style.display = "flex";
     setInterval(createHeart, 300);
-}
-
-function playMusic() {
-    const music = document.getElementById("music");
-    music.currentTime = 0;
-    music.play();
 }
 
 function createHeart() {
