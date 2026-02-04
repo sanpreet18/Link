@@ -16,7 +16,7 @@ body {
     align-items: center;
 }
 
-.container {
+.card {
     background: white;
     padding: 40px 50px;
     border-radius: 25px;
@@ -54,14 +54,13 @@ button {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    font-family: 'Segoe UI', sans-serif;
 }
 
 /* Floating hearts */
 .heart {
     position: fixed;
     bottom: -20px;
-    font-size: 24px;
+    font-size: 26px;
     animation: floatUp 6s linear forwards;
 }
 
@@ -74,8 +73,8 @@ button {
 
 <body>
 
-<!-- Question Card -->
-<div class="container" id="question">
+<!-- Question -->
+<div class="card" id="question">
     <h1>Upasna 💖</h1>
     <h2>Will you be my Valentine?</h2>
 
@@ -85,17 +84,27 @@ button {
     </div>
 </div>
 
-<!-- Success Screen -->
+<!-- Success -->
 <div id="success">
-    <div>
-        <h1>YAYYYY UPASNA!!! 💖🥰</h1>
-        <h2>You are my Valentine forever 💕</h2>
-        <p>I love you endlessly 🌹</p>
-    </div>
+    <h1>YAYYYY UPASNA!!! 💖🥰</h1>
+    <h2>You are my Valentine forever 💕</h2>
+    <p>I love you endlessly 🌹</p>
+
+    <button onclick="playMusic()" style="
+        margin-top:20px;
+        padding:14px 30px;
+        font-size:18px;
+        border-radius:30px;
+        border:none;
+        background:white;
+        color:#ff4d6d;
+        cursor:pointer;">
+        ▶ Tap to Play Music 🎵
+    </button>
 </div>
 
-<!-- Local music -->
-<audio id="music" preload="auto" loop>
+<!-- Music -->
+<audio id="music" loop>
     <source src="love.mp3" type="audio/mpeg">
 </audio>
 
@@ -109,17 +118,15 @@ function moveNo() {
 }
 
 function yesClicked() {
-    // Hide question, show success
     document.getElementById("question").style.display = "none";
     document.getElementById("success").style.display = "flex";
+    setInterval(createHeart, 300);
+}
 
-    // Play music (user-initiated → allowed)
+function playMusic() {
     const music = document.getElementById("music");
     music.currentTime = 0;
     music.play();
-
-    // Start hearts
-    setInterval(createHeart, 300);
 }
 
 function createHeart() {
